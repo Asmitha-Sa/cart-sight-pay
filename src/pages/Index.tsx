@@ -83,7 +83,7 @@ const Index = () => {
 
             <div className="max-w-4xl mx-auto">
               {!capturedImage ? (
-                <CameraCapture onCapture={handleImageCapture} />
+                <CameraCapture />
               ) : (
                 <div className="grid lg:grid-cols-2 gap-8">
                   <div>
@@ -91,7 +91,6 @@ const Index = () => {
                       image={capturedImage}
                       isProcessing={isProcessing}
                       products={products}
-                      onRetake={handleRetake}
                     />
                   </div>
                   
@@ -100,7 +99,7 @@ const Index = () => {
                       <Receipt
                         products={products}
                         total={total}
-                        onPayment={handlePayment}
+                        step="review"
                       />
                     </div>
                   )}
