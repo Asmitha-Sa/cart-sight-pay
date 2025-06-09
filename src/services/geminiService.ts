@@ -10,7 +10,13 @@ interface GeminiResponse {
   total: number;
 }
 
-export const analyzeCartImage = async (imageData: string, apiKey: string): Promise<GeminiResponse> => {
+export const analyzeCartImage = async (imageData: string): Promise<GeminiResponse> => {
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  
+  if (!apiKey) {
+    throw new Error('Gemini API key not found in environment variables');
+  }
+
   // Convert base64 to blob for the API
   const base64Data = imageData.split(',')[1];
   
