@@ -64,6 +64,54 @@ const Index = () => {
     });
   };
 
+  // Check if we're in development mode (dummy key)
+  const isDevelopmentMode = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY === 'pk_test_dummy_clerk_key_for_development';
+
+  if (isDevelopmentMode) {
+    // Show app without authentication in development mode
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              Scan-Free Checkout
+            </h1>
+            <p className="text-lg text-gray-600">
+              AI-Powered Product Recognition (Development Mode)
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            {!capturedImage ? (
+              <CameraCapture onImageCapture={handleImageCapture} />
+            ) : (
+              <div className="grid lg:grid-cols-2 gap-8">
+                <div>
+                  <ProductRecognition
+                    image={capturedImage}
+                    isProcessing={isProcessing}
+                    products={products}
+                  />
+                </div>
+                
+                {showReceipt && (
+                  <div>
+                    <Receipt
+                      products={products}
+                      total={total}
+                      onPayment={handlePayment}
+                      step="review"
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <SignedOut>
