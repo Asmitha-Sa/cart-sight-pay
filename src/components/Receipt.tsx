@@ -1,4 +1,5 @@
 
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -19,8 +20,75 @@ interface ReceiptProps {
 }
 
 const Receipt = ({ products, total, onPayment, step }: ReceiptProps) => {
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
+  
   const tax = Math.round(total * 0.18); // 18% GST
   const finalTotal = total + tax;
+
+  const handlePayment = async () => {
+    setIsProcessingPayment(true);
+    
+    // Simulate payment processing
+    setTimeout(() => {
+      setIsProcessingPayment(false);
+      setPaymentCompleted(true);
+      onPayment();
+    }, 2000);
+  };
+
+  if (paymentCompleted) {
+    return (
+      <Card className="h-fit">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <CheckCircle className="h-5 w-5 text-green-500" />
+            <span>Payment Successful!</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="text-center py-4">
+            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-green-600 mb-2">Thank you for your purchase!</h3>
+            <p className="text-gray-600">Your payment has been processed successfully.</p>
+          </div>
+          
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h4 className="font-semibold mb-3">Transaction Details</h4>
+            <div className="text-sm space-y-2">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Transaction ID:</span>
+                <span className="font-mono">TXN{Date.now()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Date:</span>
+                <span>{new Date().toLocaleDateString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Amount Paid:</span>
+                <span className="font-semibold">₹{finalTotal}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Payment Method:</span>
+                <span>Digital Payment</span>
+              </div>
+            </div>
+          </div>
+
+          <Button variant="outline" className="w-full">
+            Download Receipt
+          </Button>
+          
+          <Button 
+            onClick={() => window.location.reload()} 
+            className="w-full"
+          >
+            Start New Order
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="h-fit">
@@ -61,40 +129,24 @@ const Receipt = ({ products, total, onPayment, step }: ReceiptProps) => {
           </div>
         </div>
 
-        {step === 'receipt' && (
-          <Button 
-            onClick={onPayment}
-            className="w-full bg-green-600 hover:bg-green-700 text-lg h-12"
-            size="lg"
-          >
-            <CreditCard className="mr-2 h-5 w-5" />
-            Proceed to Payment
-          </Button>
-        )}
-
-        {step === 'payment' && (
-          <div className="space-y-4">
-            <div className="text-center py-4">
-              <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-2" />
-              <h3 className="text-lg font-semibold text-green-600">Payment Successful!</h3>
-              <p className="text-gray-600">Thank you for shopping with us</p>
-            </div>
-            
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h4 className="font-semibold mb-2">Transaction Details</h4>
-              <div className="text-sm space-y-1">
-                <p><span className="text-gray-600">Transaction ID:</span> TXN{Date.now()}</p>
-                <p><span className="text-gray-600">Date:</span> {new Date().toLocaleDateString()}</p>
-                <p><span className="text-gray-600">Amount:</span> ₹{finalTotal}</p>
-                <p><span className="text-gray-600">Method:</span> Digital Payment</p>
-              </div>
-            </div>
-
-            <Button variant="outline" className="w-full">
-              Download Receipt
-            </Button>
-          </div>
-        )}
+        <Button 
+          onClick={handlePayment}
+          disabled={isProcessingPayment}
+          className="w-full bg-green-600 hover:bg-green-700 text-lg h-12"
+          size="lg"
+        >
+          {isProcessingPayment ? (
+            <>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+              Processing Payment...
+            </>
+          ) : (
+            <>
+              <CreditCard className="mr-2 h-5 w-5" />
+              Pay ₹{finalTotal}
+            </>
+          )}
+        </Button>
       </CardContent>
     </Card>
   );
