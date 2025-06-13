@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { useToast } from '@/hooks/use-toast';
@@ -64,54 +65,6 @@ const Index = () => {
     });
   };
 
-  // Check if we're in development mode (dummy key)
-  const isDevelopmentMode = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY === 'pk_test_dummy_clerk_key_for_development';
-
-  if (isDevelopmentMode) {
-    // Show app without authentication in development mode
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              Scan-Free Checkout
-            </h1>
-            <p className="text-lg text-gray-600">
-              AI-Powered Product Recognition (Development Mode)
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            {!capturedImage ? (
-              <CameraCapture onImageCapture={handleImageCapture} />
-            ) : (
-              <div className="grid lg:grid-cols-2 gap-8">
-                <div>
-                  <ProductRecognition
-                    image={capturedImage}
-                    isProcessing={isProcessing}
-                    products={products}
-                  />
-                </div>
-                
-                {showReceipt && (
-                  <div>
-                    <Receipt
-                      products={products}
-                      total={total}
-                      onPayment={handlePayment}
-                      step="review"
-                    />
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
       <SignedOut>
@@ -119,39 +72,59 @@ const Index = () => {
       </SignedOut>
       <SignedIn>
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-          <div className="container mx-auto px-4 py-8">
-            <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <div className="container mx-auto px-4 py-6 lg:py-12">
+            <div className="text-center mb-8 lg:mb-12">
+              <h1 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-2 lg:mb-4">
                 Scan-Free Checkout
               </h1>
-              <p className="text-lg text-gray-600">
+              <p className="text-base lg:text-xl text-gray-600">
                 AI-Powered Product Recognition
               </p>
             </div>
 
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-7xl mx-auto">
               {!capturedImage ? (
-                <CameraCapture onImageCapture={handleImageCapture} />
+                <div className="max-w-2xl mx-auto">
+                  <CameraCapture onImageCapture={handleImageCapture} />
+                </div>
               ) : (
-                <div className="grid lg:grid-cols-2 gap-8">
-                  <div>
+                <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
+                  <div className="lg:col-span-2">
                     <ProductRecognition
                       image={capturedImage}
                       isProcessing={isProcessing}
                       products={products}
                     />
+                    <div className="mt-6 lg:hidden">
+                      <button
+                        onClick={handleRetake}
+                        className="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                      >
+                        Take Another Photo
+                      </button>
+                    </div>
                   </div>
                   
-                  {showReceipt && (
-                    <div>
-                      <Receipt
-                        products={products}
-                        total={total}
-                        onPayment={handlePayment}
-                        step="review"
-                      />
-                    </div>
-                  )}
+                  <div className="lg:col-span-1">
+                    {showReceipt && (
+                      <div className="sticky top-6">
+                        <Receipt
+                          products={products}
+                          total={total}
+                          onPayment={handlePayment}
+                          step="receipt"
+                        />
+                        <div className="mt-4 hidden lg:block">
+                          <button
+                            onClick={handleRetake}
+                            className="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                          >
+                            Take Another Photo
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

@@ -81,15 +81,15 @@ const CameraCapture = ({ onImageCapture }: CameraCaptureProps) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 lg:space-y-6">
       {!capturedImage && !isCamera && (
-        <div className="grid gap-4">
+        <div className="grid gap-4 lg:gap-6">
           <Button 
             onClick={startCamera}
-            className="h-16 text-lg bg-blue-600 hover:bg-blue-700"
+            className="h-16 lg:h-20 text-lg lg:text-xl bg-blue-600 hover:bg-blue-700"
             size="lg"
           >
-            <Camera className="mr-3 h-6 w-6" />
+            <Camera className="mr-3 h-6 w-6 lg:h-8 lg:w-8" />
             Open Camera
           </Button>
           
@@ -97,10 +97,10 @@ const CameraCapture = ({ onImageCapture }: CameraCaptureProps) => {
             <Button 
               onClick={() => fileInputRef.current?.click()}
               variant="outline"
-              className="h-16 text-lg w-full"
+              className="h-16 lg:h-20 text-lg lg:text-xl w-full"
               size="lg"
             >
-              <Upload className="mr-3 h-6 w-6" />
+              <Upload className="mr-3 h-6 w-6 lg:h-8 lg:w-8" />
               Upload Photo
             </Button>
             <input
@@ -116,27 +116,27 @@ const CameraCapture = ({ onImageCapture }: CameraCaptureProps) => {
 
       {isCamera && (
         <Card>
-          <CardContent className="p-4">
+          <CardContent className="p-4 lg:p-6">
             <div className="relative">
               <video
                 ref={videoRef}
                 autoPlay
                 playsInline
-                className="w-full h-64 object-cover rounded-lg bg-gray-100"
+                className="w-full h-64 lg:h-80 object-cover rounded-lg bg-gray-100"
               />
               <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-4">
                 <Button 
                   onClick={capturePhoto}
                   size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 rounded-full w-16 h-16"
+                  className="bg-blue-600 hover:bg-blue-700 rounded-full w-16 h-16 lg:w-20 lg:h-20"
                 >
-                  <Camera className="h-6 w-6" />
+                  <Camera className="h-6 w-6 lg:h-8 lg:w-8" />
                 </Button>
                 <Button 
                   onClick={stopCamera}
                   variant="outline"
                   size="lg"
-                  className="rounded-full w-16 h-16"
+                  className="rounded-full w-16 h-16 lg:w-20 lg:h-20"
                 >
                   ✕
                 </Button>
@@ -148,25 +148,25 @@ const CameraCapture = ({ onImageCapture }: CameraCaptureProps) => {
 
       {capturedImage && (
         <Card>
-          <CardContent className="p-4">
-            <div className="space-y-4">
+          <CardContent className="p-4 lg:p-6">
+            <div className="space-y-4 lg:space-y-6">
               <img 
                 src={capturedImage} 
                 alt="Captured" 
-                className="w-full h-64 object-cover rounded-lg"
+                className="w-full h-64 lg:h-80 object-cover rounded-lg"
               />
-              <div className="flex space-x-3">
+              <div className="flex space-x-3 lg:space-x-4">
                 <Button 
                   onClick={retakePhoto}
                   variant="outline"
-                  className="flex-1"
+                  className="flex-1 h-12 lg:h-14 text-base lg:text-lg"
                 >
-                  <RotateCcw className="mr-2 h-4 w-4" />
+                  <RotateCcw className="mr-2 h-4 w-4 lg:h-5 lg:w-5" />
                   Retake
                 </Button>
                 <Button 
                   onClick={confirmImage}
-                  className="flex-1 bg-green-600 hover:bg-green-700"
+                  className="flex-1 bg-green-600 hover:bg-green-700 h-12 lg:h-14 text-base lg:text-lg"
                 >
                   Use This Photo
                 </Button>
