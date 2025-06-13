@@ -6,6 +6,7 @@ import CameraCapture from '@/components/CameraCapture';
 import ProductRecognition from '@/components/ProductRecognition';
 import Receipt from '@/components/Receipt';
 import SignInPage from '@/components/SignInPage';
+import Navigation from '@/components/Navigation';
 import { analyzeCartImage } from '@/services/geminiService';
 
 interface Product {
@@ -67,9 +68,12 @@ const Index = () => {
 
   return (
     <>
+      <Navigation />
+      
       <SignedOut>
         <SignInPage />
       </SignedOut>
+      
       <SignedIn>
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
           <div className="container mx-auto px-4 py-6 lg:py-12">
