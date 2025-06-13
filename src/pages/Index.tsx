@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { useToast } from '@/hooks/use-toast';
@@ -11,6 +10,7 @@ import { analyzeCartImage } from '@/services/geminiService';
 interface Product {
   name: string;
   price: number;
+  quantity: number;
   confidence: number;
 }
 

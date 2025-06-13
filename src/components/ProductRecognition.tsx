@@ -6,6 +6,7 @@ import { Loader2, Eye, Package } from 'lucide-react';
 interface Product {
   name: string;
   price: number;
+  quantity: number;
   confidence: number;
 }
 
@@ -70,12 +71,16 @@ const ProductRecognition = ({ image, isProcessing, products }: ProductRecognitio
                     <h4 className="font-medium text-gray-900">{product.name}</h4>
                     <div className="flex items-center space-x-2 mt-1">
                       <Badge variant="secondary" className="text-xs">
+                        Qty: {product.quantity}
+                      </Badge>
+                      <Badge variant="secondary" className="text-xs">
                         {Math.round(product.confidence * 100)}% confidence
                       </Badge>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold text-green-600">₹{product.price}</p>
+                    <p className="font-semibold text-green-600">₹{product.price * product.quantity}</p>
+                    <p className="text-sm text-gray-500">₹{product.price} each</p>
                   </div>
                 </div>
               ))}

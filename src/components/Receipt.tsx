@@ -7,6 +7,7 @@ import { Receipt as ReceiptIcon, CreditCard, CheckCircle } from 'lucide-react';
 interface Product {
   name: string;
   price: number;
+  quantity: number;
   confidence: number;
 }
 
@@ -35,9 +36,9 @@ const Receipt = ({ products, total, onPayment, step }: ReceiptProps) => {
             <div key={index} className="flex justify-between items-start">
               <div className="flex-1 pr-4">
                 <p className="font-medium text-gray-900">{product.name}</p>
-                <p className="text-sm text-gray-500">Qty: 1</p>
+                <p className="text-sm text-gray-500">Qty: {product.quantity} × ₹{product.price}</p>
               </div>
-              <p className="font-semibold">₹{product.price}</p>
+              <p className="font-semibold">₹{product.price * product.quantity}</p>
             </div>
           ))}
         </div>

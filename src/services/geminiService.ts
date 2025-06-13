@@ -2,6 +2,7 @@
 interface GeminiProduct {
   name: string;
   price: number;
+  quantity: number;
   confidence: number;
 }
 
@@ -28,16 +29,17 @@ export const analyzeCartImage = async (imageData: string): Promise<GeminiRespons
             text: `Analyze this shopping cart image and identify all visible retail products. For each product, provide:
 1. Product name (be specific with brand if visible)
 2. Estimated price in Indian Rupees (₹)
-3. Confidence score (0-1)
+3. Quantity count (how many units of this product are visible)
+4. Confidence score (0-1)
 
 Return ONLY a valid JSON response in this exact format:
 {
   "products": [
-    {"name": "Product Name", "price": 120, "confidence": 0.95}
+    {"name": "Product Name", "price": 120, "quantity": 2, "confidence": 0.95}
   ]
 }
 
-Focus on common grocery/retail items. If you can't clearly identify a product, don't include it.`
+Focus on common grocery/retail items. Count each individual unit carefully. If you can't clearly identify a product or its quantity, don't include it.`
           },
           {
             inline_data: {
@@ -82,7 +84,7 @@ Focus on common grocery/retail items. If you can't clearly identify a product, d
 
     const parsedResponse = JSON.parse(jsonMatch[0]);
     const products = parsedResponse.products || [];
-    const total = products.reduce((sum: number, product: GeminiProduct) => sum + product.price, 0);
+    const total = products.reduce((sum: number, product: GeminiProduct) => sum + (product.price * product.quantity), 0);
 
     return {
       products,
